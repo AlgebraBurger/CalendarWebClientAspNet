@@ -30,6 +30,8 @@
 			                    var t = $(this).attr('title') + " : " + newDate;
 			                    event.title = t.toString();
 			                    event.start = newDate.toString();
+			                    event.description = $(this).attr('description');
+			                    event.url = $(this).attr('link');
 			                    events.push(event);
 			                });
 			                callback(events);
