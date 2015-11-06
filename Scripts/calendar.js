@@ -9,16 +9,37 @@
 			    header: {
 			      left: 'prev,next today',
 			      center: 'title',
-			      right: 'month,agendaWeek,agendaDay'
+			      right: 'Year,month,agendaWeek,agendaDay'
 			    },
 			    editable: true,
-			    events: [
-                    {
-		        			title: '',
-		        			start: new Date('','','', 20, 0),
-		        			color: '',
-		      			},
-		      	],
+			    events: function (start, end, callback) {
+			        $.ajax({
+			            url: 'http://localhost:53364/api/events',
+			            success: function (doc) {
+
+			                //doc = [{start:"2015-11-10",title:"Mandaloryan"}];
+			                var events = [];
+			                $(doc).each(function () {
+			                    
+			                    var event = [];
+			                    
+			                    var date = new Date($(this).attr('start'));
+			                  
+			                    var newDate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+			                    var t = $(this).attr('title') + " : " + newDate;
+			                    event.title = t.toString();
+			                    event.start = newDate.toString();
+			                    
+			                    events.push(event);
+			                });
+
+			                console.log(events);
+			                
+			                callback(events);
+			              
+			            }
+			        });
+			    },
 		  
 		    	dayRender: function (date, cell) {
 			        var today = new Date();
